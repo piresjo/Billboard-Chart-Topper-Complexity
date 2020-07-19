@@ -11,6 +11,7 @@ class Extractor:
         self.genius = self.setupGenius(verbose, remove, skip, excluded)
         self.artist = None
         self.songs_dict = None
+        self.filteredDict = None
 
     def setupGenius(self, verbose, remove, skip, excluded):
         self.genius = lyricsgenius.Genius(AccessToken)
@@ -49,6 +50,15 @@ class Extractor:
                 single_line_lyrics = single_line_lyrics.replace(',', '')
                 self.songs_dict[title_val] = single_line_lyrics.split()
 
+    def filterSongs(self):
+        if self.songs_dict is None:
+            return
+        self.filteredDict = {}
+        for songTitle in self.songs_dict.keys():
+            if len(self.songs_dict[songTitle]) != 0:
+                self.filteredDict[songTitle] = self.songs_dict[songTitle]
+
+
 if len(sys.argv) < 2:
     print("Need A Flag. Either Choose '-f' To Generate Extractor From File, Or '-a' To Generate With An Artist.")
     exit()
@@ -65,11 +75,13 @@ extractor = Extractor()
 if sys.argv[1] == '-f':
     if os.path.isfile(sys.argv[2]):
         extractor.extractFromFile(sys.argv[2])
+        extractor.filterSongs()
 
 if sys.argv[1] == '-a':
     extractor.saveLyricsFromArtist(sys.argv[2])
 
-print(extractor.songs_dict)
+print(len(extractor.songs_dict))
+print(len(extractor.filteredDict))
 print(time.time() - start_time)
 
 
