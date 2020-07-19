@@ -11,7 +11,7 @@ class Extractor:
         self.genius = self.setupGenius(verbose, remove, skip, excluded)
         self.artist = None
         self.songs_dict = None
-        self.filteredDict = None
+        self.filtered_dict = None
 
     def setupGenius(self, verbose, remove, skip, excluded):
         self.genius = lyricsgenius.Genius(AccessToken)
@@ -53,10 +53,10 @@ class Extractor:
     def filterSongs(self):
         if self.songs_dict is None:
             return
-        self.filteredDict = {}
+        self.filtered_dict = {}
         for songTitle in self.songs_dict.keys():
             if len(self.songs_dict[songTitle]) != 0:
-                self.filteredDict[songTitle] = self.songs_dict[songTitle]
+                self.filtered_dict[songTitle] = self.songs_dict[songTitle]
 
 
 if len(sys.argv) < 2:
@@ -81,7 +81,7 @@ if sys.argv[1] == '-a':
     extractor.saveLyricsFromArtist(sys.argv[2])
 
 print(len(extractor.songs_dict))
-print(len(extractor.filteredDict))
+print(len(extractor.filtered_dict))
 print(time.time() - start_time)
 
 
