@@ -1,0 +1,22 @@
+<!doctype html>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link href="https://fonts.googleapis.com/css2?family=Recursive&family=Roboto+Condensed&display=swap" rel="stylesheet">
+<script src="{{ url_for('static', filename='site.js') }}"></script>
+
+<title>{% block title %}{% endblock %}</title>
+
+<body>
+    <div class="navbar">
+        <!--TODO: Find way to link back to homepage-->
+        <a href=" {{ url_for('index') }} ">Homepage</a>
+        <a href=" {{ url_for('hot100') }} ">Hot 100</a>
+        <a href=" {{ url_for('report') }} ">Report</a>
+        <a href="https://github.com/piresjo/Billboard-Chart-Topper-Complexity">Github Page</a>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>

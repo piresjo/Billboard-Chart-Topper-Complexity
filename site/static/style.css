@@ -1,0 +1,56 @@
+/*TODO: Fix the */
+
+/* Navbar */
+.navbar {
+    overflow: hidden;
+    background-color: #05386B;
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+}
+  
+/* Links */
+.navbar a {
+    float: left;
+    display: block;
+    color: #EDF5E1;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+  
+/* Mousing Over Links In The Navbar */
+.navbar a:hover {
+    background: #EDF5E1;
+    color: #05386B;
+}
+ 
+/* Main Content */
+.content {
+    margin-top: 70px; /* Add a top margin to avoid content overlay */
+    font-family: 'Recursive', sans-serif;
+}
+
+/* Background Style Stuff */
+body {
+    background-color: #5CDB95;
+}
+
+/* Body Text */
+.content h1 {
+    color: #EDF5E1;
+}
+
+.content h2 {
+    color: #EDF5E1;
+}
+
+/* Links In Body */
+.content a {
+    color: #379684;
+}
+
+.content a:visited {
+    color: #05386B;
+}
