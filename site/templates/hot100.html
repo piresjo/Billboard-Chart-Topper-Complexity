@@ -1,5 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Hot 100 Over The Years{% endblock %}
 {% block content %}
-    <h1>Coming Soon</h1>
-{% endblock %}
+    <h1>COMING SOON</h1>
+    <table>
+        <thead>
+            <th>Artists</th>
+            <th>Songs</th>
+        </thead>
+        {% for i in range(0, length) %}
+            {% if lengths[i] == 1 %}
+                <tr>
+                    <th>{{ artists[i] }}</th>
+                    <td>{{ songs[i][0] }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th rowspan="{{ lengths[i] }}">{{ artists[i] }}</th>
+                    <td>{{ songs[i][0] }}</td>
+                </tr>
+                {% for j in range(1, lengths[i]) %}
+                    <tr>
+                        <td>{{ songs[i][j] }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %} 
+        {% endfor %}
+    </table>
+{% endblock content %}

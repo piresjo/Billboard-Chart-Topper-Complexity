@@ -3,32 +3,35 @@ import os
 import billboard
 import datetime
 import time
+import sys
 
 #For now, just have the past five weeks
 #TODO: If there are artists with 'featuring', should we split the artists?
 
 class BillboardExtractor:
-    def __init__(self, start_date=None, end_date=None):
-        self.start_date = start_date
-        self.end_date = end_date
+    def __init__(self, date):
+        self.start_date = date
         self.unique_songs = set()
         self.artists = set()
         self.unique_artists = set()
         self.charts = {}
         self.artists_and_songs = {}
 
-    def extractCharts(self):
-        chart_val = billboard.ChartData('hot-100')
-        date = datetime.date.today()
-        week_delta = datetime.timedelta(7)
-        temp_count = 0
-        while chart_val is not None:
-            if temp_count == 5:
-                return
-            self.charts[str(date)] = chart_val
-            date = date - week_delta
-            chart_val = billboard.ChartData('hot-100', str(date))
-            temp_count += 1
+    def extractCharts(self, number_of_weeks=100):
+        chart_date = datetime.datetime.strptime(self.start_date, '%Y-%m-%d').date()
+        try:
+            chart_val = billboard.ChartData('hot-100', self.start_date)
+            week_delta = datetime.timedelta(7)
+            first_date = datetime.date(1954, 8, 4)
+            while chart_date >= first_date and number_of_weeks != 0:
+                print(chart_val.date)
+                self.charts[chart_val.date] = chart_val
+                chart_date = chart_date - week_delta
+                chart_val = billboard.ChartData('hot-100', str(chart_date))
+                number_of_weeks -= 1
+        except:
+            print("Timeout error at date" + chart_date)
+            return
 
     def getArtistsAndSongs(self):
         for chart_date in self.charts.keys():
@@ -44,20 +47,27 @@ class BillboardExtractor:
     def writeToFile(self):
         for artist in self.artists_and_songs.keys():
             self.artists_and_songs[artist] = list(self.artists_and_songs[artist])
-        with open('artistsAndSongs.json', 'w') as outfile:
+        with open('artistsAndSongs' + self.start_date + '.json', 'w') as outfile:
             json.dump(self.artists_and_songs, outfile)
+        #with open('charts' + self.start_date + '.json', 'w') as outfile:
+        #    json.dump(self.charts, outfile)
 
-startTime = time.time()
-billboardExtractor = BillboardExtractor()
-billboardExtractor.extractCharts()
-billboardExtractor.getArtistsAndSongs()
-billboardExtractor.writeToFile()
+if len(sys.argv) < 2:
+    print("Need A Date")
+    exit()
+
+start_time = time.time()
+billboard_extractor = BillboardExtractor(sys.argv[1])
+billboard_extractor.extractCharts()
+billboard_extractor.getArtistsAndSongs()
+billboard_extractor.writeToFile()
+print(time.time() - start_time)
 
 
 '''
     Use for testing
 '''
-#print(billboardExtractor.charts)
-#print(billboardExtractor.charts['2020-06-28'])
-#print(billboardExtractor.artists)
-#print(billboardExtractor.artists_and_songs)
+#print(billboard_extractor.charts)
+#print(billboard_extractor.charts['2020-07-25'])
+#print(billboard_extractor.artists)
+#print(billboard_extractor.artists_and_songs)

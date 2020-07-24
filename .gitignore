@@ -4,3 +4,4 @@ config.py
 Lyrics_TameImpala.json
 .DS_Store
 artistsAndSongs.json
+*.json
