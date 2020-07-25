@@ -30,7 +30,7 @@ class BillboardExtractor:
                 chart_val = billboard.ChartData('hot-100', str(chart_date))
                 number_of_weeks -= 1
         except:
-            print("Timeout error at date" + chart_date)
+            print("Timeout error at date " + str(chart_date))
             return
 
     def getArtistsAndSongs(self):
@@ -49,8 +49,6 @@ class BillboardExtractor:
             self.artists_and_songs[artist] = list(self.artists_and_songs[artist])
         with open('artistsAndSongs' + self.start_date + '.json', 'w') as outfile:
             json.dump(self.artists_and_songs, outfile)
-        #with open('charts' + self.start_date + '.json', 'w') as outfile:
-        #    json.dump(self.charts, outfile)
 
 if len(sys.argv) < 2:
     print("Need A Date")

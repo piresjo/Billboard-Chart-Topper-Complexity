@@ -48,7 +48,7 @@ body {
 
 /* Links In Body */
 .content a {
-    color: #379684;
+    color: #379683;
 }
 
 .content a:visited {
@@ -56,10 +56,27 @@ body {
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid #05386B;
     border-collapse: collapse;
-  }
-  th, td {
+    color: #05386B
+}
+
+th, td {
     padding: 5px;
     text-align: left;    
-  }
+}
+
+tbody:nth-child(odd) {
+    background: #8EE4AF;
+}
+
+tbody :hover {
+    background-color: #379683;
+    color: #05386B
+}
+
+thead {
+    background-color: #379683;
+    color: #05386B;
+    text-align: center;
+}
