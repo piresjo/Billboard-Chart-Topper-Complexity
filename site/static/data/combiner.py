@@ -11,10 +11,16 @@ for filename in files:
         data = json.load(json_file)
         for artist in data.keys():
             if artist not in combined_dict:
-                combined_dict[artist] = list(data[artist])
+                combined_dict[artist] = data[artist]
             else:
-                combined_dict[artist] += data[artist]
-                combined_dict[artist] = list(set(combined_dict[artist]))
+                for song in data[artist]:
+                    if song not in combined_dict[artist]:
+                        combined_dict[artist][song] = data[artist][song]
+                    else:
+                        combined_dict[artist][song]['length'] += data[artist][song]['length']
+                        if combined_dict[artist][song]['top'] > data[artist][song]['top']:
+                            combined_dict[artist][song]['top'] = data[artist][song]['top']
+
 
 sort_list = []
 for artist in combined_dict.keys():

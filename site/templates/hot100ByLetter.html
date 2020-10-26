@@ -1,32 +1,70 @@
 {% extends "base.html" %}
 {% block title %}Hot 100 Over The Years - All {{ starting_char }}'s {% endblock %}
 {% block content %}
-    <table>
-        <thead>
-            <th>Artists</th>
-            <th>Songs</th>
-        </thead>
-        {% for i in range(0, length) %}
-            {% if lengths[i] == 1 %}
-            <tbody>
+<table>
+    <thead>
+        <th>Artists</th>
+        <th>Songs</th>
+        <th>Peak</th>
+        <th>Time On Chart</th>
+    </thead>
+    {% for i in range(0, length) %}
+        {% if lengths[i] == 1 %}
+        <tbody>
+            <tr>
+                <th>{{ artists[i] }}</th>
+                <td>{{ songs[i][0][0] }}</td>
+                <td>{{ songs[i][0][1] }}</td>
+                <td>{{ songs[i][0][2] }}</td>
+            </tr>
+        </tbody>
+        {% else %}
+        <tbody>
+            <tr>
+                <th rowspan="{{ lengths[i] }}">{{ artists[i] }}</th>
+                <td>{{ songs[i][0][0] }}</td>
+                <td>{{ songs[i][0][1] }}</td>
+                <td>{{ songs[i][0][2] }}</td>
+            </tr>
+            {% for j in range(1, lengths[i]) %}
                 <tr>
-                    <th>{{ artists[i] }}</th>
-                    <td>{{ songs[i][0] }}</td>
+                    <td>{{ songs[i][j][0] }}</td>
+                    <td>{{ songs[i][j][1] }}</td>
+                    <td>{{ songs[i][j][2] }}</td>
                 </tr>
-            </tbody>
-            {% else %}
-            <tbody>
-                <tr>
-                    <th rowspan="{{ lengths[i] }}">{{ artists[i] }}</th>
-                    <td>{{ songs[i][0] }}</td>
-                </tr>
-                {% for j in range(1, lengths[i]) %}
-                    <tr>
-                        <td>{{ songs[i][j] }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            {% endif %} 
-        {% endfor %}
-    </table>
+            {% endfor %}
+        </tbody>
+        {% endif %} 
+    {% endfor %}
+</table>
+<div id="linkBox">
+    <ul>
+        <li><a href="{{ url_for('hot100StartWithA') }}">A</a></li>
+        <li><a href="{{ url_for('hot100StartWithB') }}">B</a></li>
+        <li><a href="{{ url_for('hot100StartWithC') }}">C</a></li>
+        <li><a href="{{ url_for('hot100StartWithD') }}">D</a></li>
+        <li><a href="{{ url_for('hot100StartWithE') }}">E</a></li>
+        <li><a href="{{ url_for('hot100StartWithF') }}">F</a></li>
+        <li><a href="{{ url_for('hot100StartWithG') }}">G</a></li>
+        <li><a href="{{ url_for('hot100StartWithH') }}">H</a></li>
+        <li><a href="{{ url_for('hot100StartWithI') }}">I</a></li>
+        <li><a href="{{ url_for('hot100StartWithJ') }}">J</a></li>
+        <li><a href="{{ url_for('hot100StartWithK') }}">K</a></li>
+        <li><a href="{{ url_for('hot100StartWithL') }}">L</a></li>
+        <li><a href="{{ url_for('hot100StartWithM') }}">M</a></li>
+        <li><a href="{{ url_for('hot100StartWithN') }}">N</a></li>
+        <li><a href="{{ url_for('hot100StartWithO') }}">O</a></li>
+        <li><a href="{{ url_for('hot100StartWithP') }}">P</a></li>
+        <li><a href="{{ url_for('hot100StartWithQ') }}">Q</a></li>
+        <li><a href="{{ url_for('hot100StartWithR') }}">R</a></li>
+        <li><a href="{{ url_for('hot100StartWithS') }}">S</a></li>
+        <li><a href="{{ url_for('hot100StartWithT') }}">T</a></li>
+        <li><a href="{{ url_for('hot100StartWithU') }}">U</a></li>
+        <li><a href="{{ url_for('hot100StartWithV') }}">V</a></li>
+        <li><a href="{{ url_for('hot100StartWithW') }}">W</a></li>
+        <li><a href="{{ url_for('hot100StartWithX') }}">X</a></li>
+        <li><a href="{{ url_for('hot100StartWithY') }}">Y</a></li>
+        <li><a href="{{ url_for('hot100StartWithZ') }}">Z</a></li>
+    </ul>
+</div>
 {% endblock content %}

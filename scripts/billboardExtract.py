@@ -1,5 +1,4 @@
 import json
-import os
 import billboard
 import datetime
 import time
@@ -16,16 +15,17 @@ class BillboardExtractor:
         self.unique_artists = set()
         self.charts = {}
         self.artists_and_songs = {}
+        self.artists_songs_weeks_on_chart = {}
 
     def extractCharts(self, number_of_weeks=100):
         chart_date = datetime.datetime.strptime(self.start_date, '%Y-%m-%d').date()
         try:
-            chart_val = billboard.ChartData('hot-100', self.start_date)
+            chart_val = billboard.ChartData('hot-100', date=self.start_date, timeout=20)
             week_delta = datetime.timedelta(7)
             first_date = datetime.date(1954, 8, 4)
             while chart_date >= first_date and number_of_weeks != 0:
                 print(chart_val.date)
-                self.charts[chart_val.date] = chart_val
+                self.charts[chart_val.date] = chart_val[0:40]
                 chart_date = chart_date - week_delta
                 chart_val = billboard.ChartData('hot-100', str(chart_date))
                 number_of_weeks -= 1
@@ -36,19 +36,26 @@ class BillboardExtractor:
     def getArtistsAndSongs(self):
         for chart_date in self.charts.keys():
             song_list = self.charts[chart_date]
-            for song in song_list:
-                self.artists.add(song.artist)
-                self.unique_songs.add(song.title)
-                if song.artist not in self.artists_and_songs:
-                    self.artists_and_songs[song.artist] = set([song.title])
+            for i in range(0, len(song_list)):
+                if song_list[i].artist in self.artists_songs_weeks_on_chart:
+                    if song_list[i].title in self.artists_songs_weeks_on_chart[song_list[i].artist]:
+                        self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["length"] += 1
+                        if self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["top"] > i + 1:
+                            self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["top"] = i + 1
+                    else:
+                        self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title] = {}
+                        self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["length"] = 1
+                        self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["top"] = i + 1
                 else:
-                    self.artists_and_songs[song.artist].add(song.title)
+                    self.artists_songs_weeks_on_chart[song_list[i].artist] = {}
+                    self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title] = {}
+                    self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["length"] = 1
+                    self.artists_songs_weeks_on_chart[song_list[i].artist][song_list[i].title]["top"] = i + 1
+                
 
     def writeToFile(self):
-        for artist in self.artists_and_songs.keys():
-            self.artists_and_songs[artist] = list(self.artists_and_songs[artist])
         with open('artistsAndSongs' + self.start_date + '.json', 'w') as outfile:
-            json.dump(self.artists_and_songs, outfile)
+            json.dump(self.artists_songs_weeks_on_chart, outfile)
 
 if len(sys.argv) < 2:
     print("Need A Date")
