@@ -1,4 +1,5 @@
 from readability import Readability
+import lyricsCleaner
 
 sample_text = "Men make their own history, but they do not make it as they please; they do not " \
     "make it under self-selected circumstances, but under circumstances existing already, given " \
@@ -30,6 +31,10 @@ tame_impala_sample_text = "I was raging, it was late In the world my demons cult
     "door is calling out for you Arise and walk on through It's calling out for you Arise " \
     "and walk, come through A world beyond that door Is calling out for you"
 
+cleaned_madonna = lyricsCleaner.unescape(lyricsCleaner.madonna_text_from_genius)
+cleaned_lady_gaga = lyricsCleaner.unescape(lyricsCleaner.lady_gaga_text_from_genius)
+cleaned_ariana = lyricsCleaner.unescape(lyricsCleaner.ariana_text_from_genius)
+
 marx_readability = Readability(sample_text)
 marx_fk = marx_readability.flesch_kincaid()
 
@@ -38,8 +43,26 @@ marx_fk = marx_readability.flesch_kincaid()
 tame_readability = Readability(tame_impala_sample_text)
 tame_fk = tame_readability.flesch_kincaid()
 
+madonna_readability = Readability(cleaned_madonna)
+madonna_fk = madonna_readability.flesch_kincaid()
+
+lady_gaga_readability = Readability(cleaned_lady_gaga)
+lady_gaga_fk = lady_gaga_readability.flesch_kincaid()
+
+ariana_readability = Readability(cleaned_ariana)
+ariana_fk = ariana_readability.flesch_kincaid()
+
 print(marx_fk.score)
 print(marx_fk.grade_level)
 print("")
 print(tame_fk.score)
 print(tame_fk.grade_level)
+print("")
+print(madonna_fk.score)
+print(madonna_fk.grade_level)
+print("")
+print(lady_gaga_fk.score)
+print(lady_gaga_fk.grade_level)
+print("")
+print(ariana_fk.score)
+print(ariana_fk.grade_level)
